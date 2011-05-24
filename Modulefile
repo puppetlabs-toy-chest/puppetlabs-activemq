@@ -1,5 +1,5 @@
 name    'puppetlabs-activemq'
-version '0.0.1'
+version '1.0.0'
 source 'git://github.com/puppetlabs/puppetlabs-activemq'
 author 'puppetlabs'
 license 'Apache'
@@ -9,4 +9,4 @@ project_page 'https://github.com/puppetlabs/puppetlabs-activemq'
 
 ## Add dependencies, if any:
 dependency 'puppetlabs/stdlib', '>= 0.0.1'
-dependency 'puppetlabs/java', '>= 0.0.1'
+dependency 'puppetlabs/java', '>= 1.0.0'
