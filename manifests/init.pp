@@ -21,7 +21,9 @@ class activemq(
   $ensure  = 'running'
 ) {
 
-  # JJM FIXME: Input Validation and support for non EL5 systems.
+  validate_re($ensure, [ '^running$', '^stopped$' ])
+  validate_re($version, '^[._0-9a-zA-Z:-]+$')
+
   $version_real = $version
   $ensure_real  = $ensure
 

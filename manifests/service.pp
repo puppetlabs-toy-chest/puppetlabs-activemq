@@ -14,10 +14,10 @@ class activemq::service(
   $ensure
 ) {
 
-  # JJM FIXME Validation!
+  validate_re($ensure, [ '^running$', '^stopped$' ])
+
   $ensure_real = $ensure
 
-  # JJM FIXME Manage the service
   service { 'activemq':
     ensure     => $ensure_real,
     hasstatus  => true,
