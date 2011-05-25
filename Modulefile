@@ -1,5 +1,5 @@
 name    'puppetlabs-activemq'
-version '1.0.0'
+version '1.0.1'
 source 'git://github.com/puppetlabs/puppetlabs-activemq'
 author 'puppetlabs'
 license 'Apache'
