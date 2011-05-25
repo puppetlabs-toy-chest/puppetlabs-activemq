@@ -15,7 +15,8 @@ class activemq::config (
   $path    = '/etc/activemq/activemq.xml'
 ) {
 
-  # JJM FIXME Validation!
+  validate_re($path, '^/')
+
   $path_real = $path
 
   # Since this is a template, it should come _after_ all variables are set for
