@@ -15,7 +15,9 @@ class activemq::packages (
   $home = '/usr/share/activemq'
 ) {
 
-  # JJM FIXME Validation!
+  validate_re($version, '^[._0-9a-zA-Z:-]+$')
+  validate_re($home, '^/')
+
   $version_real = $version
   $home_real    = $home
 
