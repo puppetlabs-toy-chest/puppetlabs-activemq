@@ -17,7 +17,7 @@
 # }
 #
 class activemq(
-  $version = '5.5.0-2.el5',
+  $version = 'present',
   $ensure  = 'running'
 ) {
 
