@@ -46,7 +46,6 @@ class activemq::packages (
 
   package { 'activemq':
     ensure  => $version_real,
-    require => Package['java'],
     notify  => Service['activemq'],
   }
 
