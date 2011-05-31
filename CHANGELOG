@@ -1,3 +1,6 @@
+2011-05-31 Jeff McCune <jeff@puppetlabs.com> - 0.1.4
+* Add server_config class parameter for re-usability
+
 2011-05-28 Jeff McCune <jeff@puppetlabs.com> - 0.1.3
 * Remove stages
 
