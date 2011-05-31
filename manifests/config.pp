@@ -11,20 +11,14 @@
 # Sample Usage:
 #
 class activemq::config (
-  $content = 'UNSET',
-  $path    = '/etc/activemq/activemq.xml'
+  $server_config,
+  $path = '/etc/activemq/activemq.xml'
 ) {
 
   validate_re($path, '^/')
-
   $path_real = $path
 
-  # Since this is a template, it should come _after_ all variables are set for
-  # this class.
-  $content_real = $content ? {
-    'UNSET' => template("${module_name}/activemq.xml.erb"),
-    default => $content,
-  }
+  $server_config_real = $server_config
 
   # Resource defaults
   File {
@@ -41,7 +35,7 @@ class activemq::config (
     path    => $path_real,
     owner   => '0',
     group   => '0',
-    content => $content_real,
+    content => $server_config_real,
   }
 
 }
