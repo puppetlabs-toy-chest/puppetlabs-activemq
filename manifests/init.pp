@@ -43,19 +43,29 @@ class activemq(
     default => $server_config,
   }
 
+  # Anchors for containing the implementation class
+  anchor { 'activemq::begin':
+    before => Class['activemq::packages'],
+    notify => Class['activemq::service'],
+  }
+
   class { 'activemq::packages':
     version => $version_real,
-    require => Class['java'],
+    notify  => Class['activemq::service'],
   }
 
   class { 'activemq::config':
     server_config => $server_config_real,
     require       => Class['activemq::packages'],
+    notify        => Class['activemq::service'],
   }
 
   class { 'activemq::service':
-    ensure    => $ensure_real,
-    subscribe => Class['activemq::config'],
+    ensure => $ensure_real,
+  }
+
+  anchor { 'activemq::end':
+    require => Class['activemq::service'],
   }
 
 }

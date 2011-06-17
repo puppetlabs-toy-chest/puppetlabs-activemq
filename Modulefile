@@ -8,5 +8,5 @@ description 'ActiveMQ Puppet Module'
 project_page 'https://github.com/puppetlabs/puppetlabs-activemq'
 
 ## Add dependencies, if any:
-dependency 'puppetlabs/stdlib', '>= 0.0.1'
+dependency 'puppetlabs/stdlib', '>= 0.1.6'
 dependency 'puppetlabs/java', '>= 0.1.0'
