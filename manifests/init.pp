@@ -30,10 +30,8 @@ class activemq(
   $server_config = 'UNSET'
 ) {
 
-  # Arrays cannot take anonymous arrays in Puppet 2.6.8
-  $v_ensure = [ '^running$', '^stopped$' ]
-  validate_re($ensure, $v_ensure)
-  validate_re($version, '^[._0-9a-zA-Z:-]+$')
+  validate_re($ensure, '^running$|^stopped$')
+  validate_re($version, '^present$|^latest$|^[._0-9a-zA-Z:-]+$')
 
   $version_real = $version
   $ensure_real  = $ensure
