@@ -1,9 +1,12 @@
 node default {
-  notify { 'alpha': } ->
+  notify { 'alpha': }
+  ->
   class  { 'java':
     distribution => 'jdk',
     version      => 'latest',
-  } ->
-  class  { 'activemq': } ->
+  }
+  ->
+  class  { 'activemq': }
+  ->
   notify { 'omega': }
 }
