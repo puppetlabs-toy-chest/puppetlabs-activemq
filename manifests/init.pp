@@ -27,14 +27,17 @@
 class activemq(
   $version       = 'present',
   $ensure        = 'running',
+  $webconsole    = true,
   $server_config = 'UNSET'
 ) {
 
   validate_re($ensure, '^running$|^stopped$')
   validate_re($version, '^present$|^latest$|^[._0-9a-zA-Z:-]+$')
+  validate_bool($webconsole)
 
   $version_real = $version
   $ensure_real  = $ensure
+  $webconsole_real = $webconsole
 
   # Since this is a template, it should come _after_ all variables are set for
   # this class.
