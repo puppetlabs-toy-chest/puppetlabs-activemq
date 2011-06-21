@@ -7,7 +7,7 @@ node default {
   }
   ->
   class  { 'activemq':
-    webconsole => true,
+    webconsole => false,
   }
   ->
   notify { 'omega': }
