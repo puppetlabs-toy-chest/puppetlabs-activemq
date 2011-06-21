@@ -1,3 +1,6 @@
+2011-06-21 Jeff McCune <jeff@puppetlabs.com> - 0.1.6
+* Add webconsole setting to enable console at http://localhost:8160/admin
+
 2011-06-17 Jeff McCune <jeff@puppetlabs.com> - 0.1.5
 * Add anchors to provider better relationship management
 
