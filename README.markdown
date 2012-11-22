@@ -39,9 +39,9 @@ provided much of the basis for this module.
 # Web Console #
 
 The module manages the web console by default.  The web console port is usually
-located at port 8160:
+located at port 8161:
 
- * [http://localhost:8160/admin](http://localhost:8160/admin)
+ * [http://localhost:8160/admin](http://localhost:8161/admin)
 
 To disable this behavior, pass in webconsole => false to the class.  e.g.
 

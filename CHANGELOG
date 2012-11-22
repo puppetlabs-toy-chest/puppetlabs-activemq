@@ -1,3 +1,9 @@
+2012-11-22 Felipe Salum <fsalum@gmail.com> - 0.1.7
+* Rewrite module to use the Apache ActiveMQ binary instead of Linux distro packages
+* Add parameters to module for activemq.xml config file
+* Fix activemq init script
+* Update README for standard webconsole setting at http://localhost:8161/admin
+
 2011-06-21 Jeff McCune <jeff@puppetlabs.com> - 0.1.6
 * Add webconsole setting to enable console at http://localhost:8160/admin
 
