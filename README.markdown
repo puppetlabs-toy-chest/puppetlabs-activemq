@@ -1,5 +1,6 @@
 ActiveMQ
 ========
+[![Build Status](https://travis-ci.org/fsalum/puppetlabs-activemq.png?branch=master)](https://travis-ci.org/fsalum/puppetlabs-activemq)
 
 This module configures ActiveMQ.  It uses the Apache ActiveMQ binary package
 and the Java runtime.

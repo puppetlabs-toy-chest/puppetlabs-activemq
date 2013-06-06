@@ -12,7 +12,7 @@ branches:
 env:
   global:
   - PUBLISHER_LOGIN=fsalum
-  - secure: "YfDM8e3Nr255NgOL9zqBGsgd7phq0v13Snf+O8Qxu24Q4MDHcXNmBkKZVfwu\nqCc9ImFpL+mdVQUsM5adKAuf9HEjY0zdTIHF/iPhQFLoRSnfvl67HJ9kykti\nKpmXicorXhZ4GTR3YlZgY3Wm+jXm2PykZicBnOVgwFGeyvcKCD8="
+  - secure: "TIhI+MjyZ/HXhpbFN6Yt8MlAsIbxSmJYcrCgEEGuIJg+pRYf3Z8anLBrY7T2\n5gvEb2A67WWwHmYpZ54OAZGpBqTk5qLzcqE7rob+FUh/za3q7o45gXDoFCoA\nlQFjiGoYgfo2n+rOqbrpZM00DmBiZDrYjyJ2YWKoK8DCIlNLgSQ="
   matrix:
   - PUPPET_VERSION=2.7.21
   - PUPPET_VERSION=3.1.1
