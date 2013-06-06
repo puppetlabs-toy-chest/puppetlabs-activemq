@@ -9,11 +9,11 @@
 <% if webconsole_real -%>
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
-            <value>file:${activemq.base}/conf/credentials.properties</value>
+	<value>file:${activemq.conf}/credentials.properties</value>
         </property>
     </bean>
-
 <% end -%>
+
     <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" useJmx="true">
         <managementContext>
             <managementContext createConnector="false"/>
@@ -23,8 +23,8 @@
           <statisticsBrokerPlugin/>
           <simpleAuthenticationPlugin>
             <users>
-              <authenticationUser username="mcollective" password="marionette" groups="mcollective,everyone"/>
-              <authenticationUser username="admin" password="secret" groups="mcollective,admin,everyone"/>
+	    <authenticationUser username="<%= @stomp_user %>" password="<%= @stomp_passwd %>" groups="mcollective,everyone"/>
+	    <authenticationUser username="<%= @stomp_admin %>" password="<%= @stomp_adminpw %>" groups="mcollective,admin,everyone"/>
             </users>
           </simpleAuthenticationPlugin>
           <authorizationPlugin>
@@ -58,7 +58,7 @@
 
         <transportConnectors>
             <transportConnector name="openwire" uri="tcp://0.0.0.0:6166"/>
-            <transportConnector name="stomp+nio" uri="stomp://0.0.0.0:6163"/>
+            <transportConnector name="stomp" uri="stomp://0.0.0.0:6163"/>
         </transportConnectors>
     </broker>
 

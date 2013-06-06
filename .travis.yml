@@ -1,0 +1,22 @@
+---
+language: ruby
+rvm:
+- 1.8.7
+- 1.9.3
+script:
+- git clone -q git://github.com/puppetlabs/ghpublisher.git .forge-releng
+- .forge-releng/publish
+branches:
+  only:
+  - master
+env:
+  global:
+  - PUBLISHER_LOGIN=fsalum
+  - secure: "TIhI+MjyZ/HXhpbFN6Yt8MlAsIbxSmJYcrCgEEGuIJg+pRYf3Z8anLBrY7T2\n5gvEb2A67WWwHmYpZ54OAZGpBqTk5qLzcqE7rob+FUh/za3q7o45gXDoFCoA\nlQFjiGoYgfo2n+rOqbrpZM00DmBiZDrYjyJ2YWKoK8DCIlNLgSQ="
+  matrix:
+  - PUPPET_VERSION=2.7.21
+  - PUPPET_VERSION=3.1.1
+  - PUPPET_VERSION=3.2.1
+notifications:
+  email: false
+gemfile: Gemfile
