@@ -1,3 +1,7 @@
+2013-06-06 Felipe Salum <fsalum@gmail.com> - 0.1.8
+* Fix for Puppet 3.2.1 deprecation warnings.
+* Added Travis build
+
 2012-11-22 Felipe Salum <fsalum@gmail.com> - 0.1.7
 * Rewrite module to use the Apache ActiveMQ binary instead of Linux distro packages
 * Add parameters to module for activemq.xml config file

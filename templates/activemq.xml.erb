@@ -23,8 +23,8 @@
           <statisticsBrokerPlugin/>
           <simpleAuthenticationPlugin>
             <users>
-	    <authenticationUser username="<%= stomp_user %>" password="<%= stomp_passwd %>" groups="mcollective,everyone"/>
-	    <authenticationUser username="<%= stomp_admin %>" password="<%= stomp_adminpw %>" groups="mcollective,admin,everyone"/>
+	    <authenticationUser username="<%= @stomp_user %>" password="<%= @stomp_passwd %>" groups="mcollective,everyone"/>
+	    <authenticationUser username="<%= @stomp_admin %>" password="<%= @stomp_adminpw %>" groups="mcollective,admin,everyone"/>
             </users>
           </simpleAuthenticationPlugin>
           <authorizationPlugin>

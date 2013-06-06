@@ -150,7 +150,7 @@ JAVACMD="auto"
 
 # Set jvm memory configuration
 if [ -z "$ACTIVEMQ_OPTS_MEMORY" ] ; then
-    ACTIVEMQ_OPTS_MEMORY="-Xms<%= activemq_mem_min %> -Xmx<%= activemq_mem_max %>"
+    ACTIVEMQ_OPTS_MEMORY="-Xms<%= @activemq_mem_min %> -Xmx<%= @activemq_mem_max %>"
 fi
 
 # Uncomment to enable audit logging
