@@ -5,6 +5,10 @@ describe 'activemq' do
     should contain_class('activemq')
   end
 
+  # calling the file activemq.xml will be fragile if this module ever supports
+  # debian-style multi-instance configurations
+  it { should contain_file('activemq.xml') }
+
   describe "#webconsole" do
     context "with the default template" do
       describe "true" do
