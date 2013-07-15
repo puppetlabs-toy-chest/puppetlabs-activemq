@@ -4,4 +4,23 @@ describe 'activemq' do
   it "should compile" do
     should contain_class('activemq')
   end
+
+  describe "#webconsole" do
+    context "with the default template" do
+      describe "true" do
+        let(:params) { { 'webconsole' => true } }
+        it { should contain_file('activemq.xml').with_content(/jetty.xml/) }
+        it {
+          pending "templates/default/jetty.xml is a tease - we don't actually push it out in any case"
+          should contain_file('jetty.xml')
+        }
+      end
+
+      describe "false" do
+        let(:params) { { 'webconsole' => false } }
+        it { should_not contain_file('activemq.xml').with_content(/jetty.xml/) }
+        it { should_not contain_file('jetty.xml') }
+      end
+    end
+  end
 end
