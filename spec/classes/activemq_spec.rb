@@ -27,4 +27,13 @@ describe 'activemq' do
       end
     end
   end
+
+  context "/etc/init.d/activemq" do
+    it { should_not contain_file('/etc/init.d/activemq') }
+
+    context "RedHat" do
+      let(:facts) { { :osfamily => 'RedHat' } }
+      it { should contain_file('/etc/init.d/activemq') }
+    end
+  end
 end
