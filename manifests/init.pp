@@ -27,6 +27,7 @@
 class activemq(
   $version       = 'present',
   $ensure        = 'running',
+  $instance      = 'activemq',
   $webconsole    = true,
   $server_config = 'UNSET'
 ) {
@@ -58,6 +59,7 @@ class activemq(
   }
 
   class { 'activemq::config':
+    instance      => $instance,
     server_config => $server_config_real,
     require       => Class['activemq::packages'],
     notify        => Class['activemq::service'],
