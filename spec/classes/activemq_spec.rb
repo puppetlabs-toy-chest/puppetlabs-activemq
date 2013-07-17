@@ -27,4 +27,44 @@ describe 'activemq' do
       end
     end
   end
+
+  context "/etc/init.d/activemq" do
+    it { should_not contain_file('/etc/init.d/activemq') }
+
+    context "RedHat" do
+      let(:facts) { { :osfamily => 'RedHat' } }
+      it { should contain_file('/etc/init.d/activemq') }
+    end
+  end
+
+  describe "#instance" do
+    context "Debian" do
+      let(:facts) { { :osfamily => 'Debian' } }
+      context "default" do
+        it { should contain_file('activemq.xml').with_path('/etc/activemq/instances-available/activemq/activemq.xml') }
+        it { should contain_file('/etc/activemq/instances-enabled/activemq') }
+        it { should contain_file('/etc/activemq/instances-enabled/activemq').with_ensure('link') }
+        it { should contain_file('/etc/activemq/instances-enabled/activemq').with_target('/etc/activemq/instances-available/activemq') }
+      end
+
+      context "pies" do
+        let(:params) { { :instance => 'pies' } }
+        it { should contain_file('activemq.xml').with_path('/etc/activemq/instances-available/pies/activemq.xml') }
+        it { should contain_file('/etc/activemq/instances-enabled/pies') }
+        it { should contain_file('/etc/activemq/instances-enabled/pies').with_ensure('link') }
+        it { should contain_file('/etc/activemq/instances-enabled/pies').with_target('/etc/activemq/instances-available/pies') }
+      end
+    end
+
+    context "everywhere else" do
+      context "default" do
+        it { should contain_file('activemq.xml').with_path('/etc/activemq/activemq.xml') }
+      end
+
+      context "pies" do
+        let(:params) { { :instance => 'pies' } }
+        it { should contain_file('activemq.xml').with_path('/etc/activemq/activemq.xml') }
+      end
+    end
+  end
 end
