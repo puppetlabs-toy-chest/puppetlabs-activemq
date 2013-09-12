@@ -25,20 +25,65 @@
 # }
 #
 class activemq(
-  $version       = 'present',
-  $ensure        = 'running',
-  $instance      = 'activemq',
-  $webconsole    = true,
-  $server_config = 'UNSET'
+  $version                 = 'present',
+  $ensure                  = 'running',
+  $instance                = 'activemq',
+  $webconsole              = true,
+  $mq_admin_username       = 'admin',
+  $mq_admin_password       = 'admin',
+  $mq_mcollective_username = 'mcollective',
+  $mq_mcollective_password = 'marionette',
+  $mq_cluster_username     = 'amq',
+  $mq_cluster_password     = 'secret',
+  $mq_cluster_brokers      = [],
+  $server_config           = 'UNSET'
 ) {
 
   validate_re($ensure, '^running$|^stopped$')
   validate_re($version, '^present$|^latest$|^[._0-9a-zA-Z:-]+$')
   validate_bool($webconsole)
+  validate_string($mq_admin_username)
+  validate_string($mq_admin_password)
+  validate_string($mq_mcollective_username)
+  validate_string($mq_mcollective_password)
+  validate_string($mq_cluster_username)
+  validate_string($mq_cluster_password)
+  validate_array($mq_cluster_brokers)
 
-  $version_real = $version
-  $ensure_real  = $ensure
-  $webconsole_real = $webconsole
+  $version_real                 = $version
+  $ensure_real                  = $ensure
+  $webconsole_real              = $webconsole
+  $mq_admin_username_real       = $mq_admin_username
+  $mq_admin_password_real       = $mq_admin_password
+  $mq_mcollective_username_real = $mq_mcollective_username
+  $mq_mcollective_password_real = $mq_mcollective_password
+  $mq_cluster_username_real     = $mq_cluster_username
+  $mq_cluster_password_real     = $mq_cluster_password
+  $mq_cluster_brokers_real      = $mq_cluster_brokers
+
+  if $mq_admin_username_real == 'admin' {
+    warning '$mq_admin_username is set to the default value.  This should be changed.'
+  }
+
+  if $mq_admin_password_real == 'admin' {
+    warning '$mq_admin_password is set to the default value.  This should be changed.'
+  }
+
+  if $mq_mcollective_username_real == 'mcollective' {
+    warning '$mq_mcollective_username is set to the default value.  This should be changed.'
+  }
+
+  if $mq_mcollective_password_real == 'marionette' {
+    warning '$mq_mcollective_password is set to the default value.  This should be changed.'
+  }
+
+  if size($mq_cluster_brokers_real) > 0 and $mq_cluster_username_real == 'amq' {
+    warning '$mq_cluster_username is set to the default value.  This should be changed.'
+  }
+
+  if size($mq_cluster_brokers_real) > 0 and $mq_cluster_password_real == 'secret' {
+    warning '$mq_cluster_password is set to the default value.  This should be changed.'
+  }
 
   # Since this is a template, it should come _after_ all variables are set for
   # this class.
