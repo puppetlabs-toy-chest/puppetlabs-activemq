@@ -14,17 +14,60 @@
     </bean>
 
 <% end -%>
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" useJmx="true">
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= scope.lookupvar('::fqdn') %>" useJmx="true">
         <managementContext>
             <managementContext createConnector="false"/>
         </managementContext>
+
+<% if @mq_cluster_brokers_real.length > 1 -%>
+        <!--
+          Configure network connectors for a network of brokers. 
+          In this config, all brokers are connected to each other.
+        -->
+        <networkConnectors>
+  <%- @mq_cluster_brokers_real.each do |broker| -%>
+    <%- if broker != scope.lookupvar('::fqdn') -%>
+          <networkConnector
+                name="<%= scope.lookupvar('::fqdn') %>-<%= broker %>-topics"
+                uri="static:(tcp://<%= broker %>:61616)"
+                userName="<%= @mq_cluster_username_real %>"
+                password="<%= @mq_cluster_password_real %>"
+                duplex="false"
+                decreaseNetworkConsumerPriority="true"
+                networkTTL="2"
+                dynamicOnly="true">
+                <excludedDestinations>
+                        <queue physicalName=">" />
+                </excludedDestinations>
+          </networkConnector>
+          <networkConnector
+                name="<%= scope.lookupvar('::fqdn') %>-<%= broker %>-queues"
+                uri="static:(tcp://<% broker -%>:61616)"
+                userName="<%= @mq_cluster_username_real %>"
+                password="<%= @mq_cluster_password_real %>"
+                duplex="false"
+                decreaseNetworkConsumerPriority="true"
+                networkTTL="2"
+                dynamicOnly="true"
+                conduitSubscriptions="false">
+                <excludedDestinations>
+                        <topic physicalName=">" />
+                </excludedDestinations>
+          </networkConnector>
+    <%- end -%>
+  <%- end -%>
+        </networkConnectors>
+<%- end -%>
 
         <plugins>
           <statisticsBrokerPlugin/>
           <simpleAuthenticationPlugin>
             <users>
+<% if @mq_cluster_brokers_real.length > 1 -%>
+              <authenticationUser username="<%= @mq_cluster_username_real %>" password="<%= @mq_cluster_password_real %>" groups="admins,everyone"/>
+<% end -%>
               <authenticationUser username="mcollective" password="marionette" groups="mcollective,everyone"/>
-              <authenticationUser username="admin" password="secret" groups="mcollective,admin,everyone"/>
+              <authenticationUser username="<%= @mq_admin_username_real %>" password="<%= @mq_admin_password_real %>" groups="mcollective,admins,everyone"/>
             </users>
           </simpleAuthenticationPlugin>
           <authorizationPlugin>
@@ -57,6 +100,9 @@
         </systemUsage>
 
         <transportConnectors>
+<% if @mq_cluster_brokers_real.length > 1 -%>
+            <transportConnector name="openwire" uri="tcp://0.0.0.0:61616" />
+<% end -%>
             <transportConnector name="openwire" uri="tcp://0.0.0.0:6166"/>
             <transportConnector name="stomp+nio" uri="stomp://0.0.0.0:6163"/>
         </transportConnectors>
