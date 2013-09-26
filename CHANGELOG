@@ -1,3 +1,19 @@
+2013-09-26 Release 0.2.0
+
+Summary:
+
+Adds Debian osfamily support and proper testing
+
+Backwards-incompatible changes:
+
+The module no longer manages the activemq user/group
+and instead relies on the deb and rpm packages to do it.
+
+Features:
+
+- Add support for Debian osfamilies
+- Add proper spec testing
+
 2011-06-21 Jeff McCune <jeff@puppetlabs.com> - 0.1.6
 * Add webconsole setting to enable console at http://localhost:8160/admin
 
