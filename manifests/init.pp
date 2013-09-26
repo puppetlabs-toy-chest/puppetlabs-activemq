@@ -4,6 +4,20 @@
 #
 # Parameters:
 #
+#    [*version*]            - ActiveMQ version
+#    [*ensure*]             - ActiveMQ service parameter
+#    [*instance*]           - ActiveMQ instance
+#    [*webconsole*]         - Boolean flag for installing the webconsole
+#    [*server_config*]      - Configuration for ActiveMQ
+#    [*wrapper_config*]     - Configuration for ActiveMQ wrapper
+#    [*java_max_memory*]    - Maximum Java Heap Size for ActiveMQ (in MB)
+#    [*admin_user*]         - Admin username
+#    [*admin_passwd*]       - Admin password
+#    [*mcollective_user*]   - MCollective username
+#    [*mcollective_passwd*] - MCollective password
+#    [*openwire_port*]      - Openwire port (use 'UNSET' to disable)
+#    [*stomp_port*]         - Stomp port (use 'UNSET' to disable)
+#
 # Actions:
 #
 # Requires:
@@ -25,11 +39,19 @@
 # }
 #
 class activemq(
-  $version       = 'present',
-  $ensure        = 'running',
-  $instance      = 'activemq',
-  $webconsole    = true,
-  $server_config = 'UNSET'
+  $version              = 'present',
+  $ensure               = 'running',
+  $instance             = 'activemq',
+  $webconsole           = true,
+  $server_config        = 'UNSET',
+  $wrapper_config       = 'UNSET',
+  $java_max_memory      = 512,
+  $admin_user           = 'admin',
+  $admin_passwd         = 'secret',
+  $mcollective_user     = 'mcollective',
+  $mcollective_passwd   = 'marionette',
+  $openwire_port        = 6166,
+  $stomp_port           = 6163,
 ) {
 
   validate_re($ensure, '^running$|^stopped$')
@@ -46,6 +68,10 @@ class activemq(
     'UNSET' => template("${module_name}/activemq.xml.erb"),
     default => $server_config,
   }
+  $wrapper_config_real = $wrapper_config ? {
+    'UNSET' => template("${module_name}/activemq-wrapper.conf.erb"),
+    default => $wrapper_config,
+  }
 
   # Anchors for containing the implementation class
   anchor { 'activemq::begin':
@@ -59,10 +85,11 @@ class activemq(
   }
 
   class { 'activemq::config':
-    instance      => $instance,
-    server_config => $server_config_real,
-    require       => Class['activemq::packages'],
-    notify        => Class['activemq::service'],
+    instance       => $instance,
+    server_config  => $server_config_real,
+    wrapper_config => $wrapper_config_real,
+    require        => Class['activemq::packages'],
+    notify         => Class['activemq::service'],
   }
 
   class { 'activemq::service':
