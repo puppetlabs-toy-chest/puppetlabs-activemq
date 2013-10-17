@@ -1,5 +1,5 @@
 name    'fsalum-activemq'
-version '0.1.8'
+version '0.1.9'
 source 'git://github.com/fsalum/puppetlabs-activemq'
 author 'fsalum'
 license 'Apache Version 2.0'
