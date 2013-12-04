@@ -23,19 +23,26 @@
           <statisticsBrokerPlugin/>
           <simpleAuthenticationPlugin>
             <users>
-              <authenticationUser username="mcollective" password="marionette" groups="mcollective,everyone"/>
-              <authenticationUser username="admin" password="secret" groups="mcollective,admin,everyone"/>
+<%  @authentication.each do |user| -%>
+<%    if user.has_key?('groups') -%>
+              <authenticationUser username="<%= user['username'] %>" password="<%= user['password'] %>" groups="<%= user['groups'] %>"/>
+<%    else -%>
+              <authenticationUser username="<%= user['username'] %>" password="<%= user['password'] %>"/>
+<%    end -%>
+<%  end -%>
             </users>
           </simpleAuthenticationPlugin>
           <authorizationPlugin>
             <map>
               <authorizationMap>
                 <authorizationEntries>
-                  <authorizationEntry queue=">" write="admins" read="admins" admin="admins" />
-                  <authorizationEntry topic=">" write="admins" read="admins" admin="admins" />
-                  <authorizationEntry topic="mcollective.>" write="mcollective" read="mcollective" admin="mcollective" />
-                  <authorizationEntry queue="mcollective.>" write="mcollective" read="mcollective" admin="mcollective" />
-                  <authorizationEntry topic="ActiveMQ.Advisory.>" read="everyone" write="everyone" admin="everyone"/>
+<%  @authorization.each do |auth| -%>
+<%    if auth.has_key?('topic') -%>
+                  <authorizationEntry topic="<%= auth['topic'] %>" write="<%= auth['write'] %>" read="<%= auth['read'] %>" admin="<%= auth['admin'] %>" />
+<%    elsif auth.has_key?('queue') -%>
+                  <authorizationEntry queue="<%= auth['queue'] %>" write="<%= auth['write'] %>" read="<%= auth['read'] %>" admin="<%= auth['admin'] %>" />
+<%    end -%>
+<%  end -%>
                 </authorizationEntries>
               </authorizationMap>
             </map>

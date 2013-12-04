@@ -7,7 +7,30 @@ describe 'activemq' do
 
   # calling the file activemq.xml will be fragile if this module ever supports
   # debian-style multi-instance configurations
-  it { should contain_file('activemq.xml') }
+  context "#activemq.xml" do
+    it { should contain_file('activemq.xml') }
+    context "users" do
+      it "should set default authentication" do
+        should contain_file('activemq.xml').with_content(/<authenticationUser username="mcollective" password="marionette" groups="mcollective,everyone"\/>/)
+        should contain_file('activemq.xml').with_content(/<authenticationUser username="admin" password="secret" groups="mcollective,admin,everyone"\/>/)
+      end
+
+      context "auth should not require groups" do
+        let(:params) { { :authentication => [ { 'username' => 'mcollective', 'password' => 'marionette'} ] } }
+        it { should contain_file('activemq.xml').with_content(/<authenticationUser username="mcollective" password="marionette"\/>/) }
+      end
+    end
+
+    context "authorization" do
+      it "should set default authorization" do
+        should contain_file('activemq.xml').with_content(/<authorizationEntry queue=">" write="admins" read="admins" admin="admins" \/>/)
+        should contain_file('activemq.xml').with_content(/<authorizationEntry topic=">" write="admins" read="admins" admin="admins" \/>/)
+        should contain_file('activemq.xml').with_content(/<authorizationEntry topic="mcollective\.>" write="mcollective" read="mcollective" admin="mcollective" \/>/)
+        should contain_file('activemq.xml').with_content(/<authorizationEntry queue="mcollective\.>" write="mcollective" read="mcollective" admin="mcollective" \/>/)
+        should contain_file('activemq.xml').with_content(/<authorizationEntry topic="ActiveMQ\.Advisory\.>" write="everyone" read="everyone" admin="everyone" \/>/)
+      end
+    end
+  end
 
   describe "#webconsole" do
     context "with the default template" do

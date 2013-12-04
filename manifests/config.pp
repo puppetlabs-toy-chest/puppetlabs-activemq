@@ -13,7 +13,7 @@
 class activemq::config (
   $server_config,
   $instance,
-  $path = '/etc/activemq/activemq.xml'
+  $path           = '/etc/activemq/activemq.xml',
 ) {
 
   # Resource defaults
