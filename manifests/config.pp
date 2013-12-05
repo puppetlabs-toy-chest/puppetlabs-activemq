@@ -25,8 +25,6 @@ class activemq::config (
     require => Package['activemq'],
   }
 
-  $server_config_real = $server_config
-
   if $::osfamily == 'Debian' {
     $available = "/etc/activemq/instances-available/${instance}"
     $path_real = "${available}/activemq.xml"
@@ -45,13 +43,22 @@ class activemq::config (
     $path_real = $path
   }
 
+  if $server_config {
+    $source = $server_config
+    $content = undef
+  } else {
+    $source = undef
+    $content = template("${module_name}/activemq.xml.erb")
+  }
+
   # The configuration file itself.
   file { 'activemq.xml':
     ensure  => file,
     path    => $path_real,
     owner   => '0',
     group   => '0',
-    content => $server_config_real,
+    content => $content,
+    source  => $source
   }
 
 }
