@@ -13,7 +13,8 @@
 class activemq::config (
   $server_config,
   $instance,
-  $path = '/etc/activemq/activemq.xml'
+  $path = '/etc/activemq/activemq.xml',
+  $brokername = 'localhost'
 ) {
 
   # Resource defaults
@@ -54,4 +55,32 @@ class activemq::config (
     content => $server_config_real,
   }
 
+}
+
+class activemq::webconsole(
+  $auth = true,
+  $interface = 'all',
+  $password = 'msgbusadminsecret'
+){
+
+  $real_interface = $interface ? {
+    'all' => '0.0.0.0',
+    default => $interface
+  }
+
+  file {'jetty.xml':
+    ensure  => file,
+    path    => '/etc/activemq/jetty.xml',
+    owner   => '0',
+    group   => '0',
+    content =>  template("${module_name}/jetty.xml.erb")
+  }
+
+  file {'jetty-realm.properties':
+    ensure  => file,
+    path    => '/etc/activemq/jetty-realm.properties',
+    owner   => '0',
+    group   => '0',
+    content => template("${module_name}/jetty-realm.properties.erb")
+  }
 }
