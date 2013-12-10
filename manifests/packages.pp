@@ -29,7 +29,7 @@ class activemq::packages (
     file { '/etc/init.d/activemq':
       ensure  => file,
       path    => '/etc/init.d/activemq',
-      content => template("${module_name}/init/activemq"),
+      content => template("${module_name}/init/activemq.erb"),
       owner   => '0',
       group   => '0',
       mode    => '0755',
