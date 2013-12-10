@@ -14,7 +14,7 @@
     </bean>
 
 <% end -%>
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" useJmx="true">
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= @brokername %>" useJmx="true">
         <managementContext>
             <managementContext createConnector="false"/>
         </managementContext>
@@ -23,8 +23,8 @@
           <statisticsBrokerPlugin/>
           <simpleAuthenticationPlugin>
             <users>
-              <authenticationUser username="mcollective" password="marionette" groups="mcollective,everyone"/>
-              <authenticationUser username="admin" password="secret" groups="mcollective,admin,everyone"/>
+              <authenticationUser username="<%= @mcollective_username %>" password="<%= @mcollective_password %>" groups="mcollective,everyone"/>
+              <authenticationUser username="admin" password="<%= @admin_password %>" groups="mcollective,admin,everyone"/>
             </users>
           </simpleAuthenticationPlugin>
           <authorizationPlugin>
