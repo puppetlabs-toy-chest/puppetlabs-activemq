@@ -13,6 +13,7 @@
 class activemq::config (
   $server_config,
   $instance,
+  $package,
   $path = '/etc/activemq/activemq.xml'
 ) {
 
@@ -22,7 +23,7 @@ class activemq::config (
     group   => 'activemq',
     mode    => '0644',
     notify  => Service['activemq'],
-    require => Package['activemq'],
+    require => Package[$package],
   }
 
   $server_config_real = $server_config
