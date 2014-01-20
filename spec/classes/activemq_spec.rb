@@ -67,4 +67,15 @@ describe 'activemq' do
       end
     end
   end
+
+  describe '#config' do
+    context 'template' do
+      it { should contain_file('activemq.xml').with(:content => /<authorizationEntry topic="mcollective\.>" write="mcollective" read="mcollective" admin="mcollective" \/>/, :source => nil) }
+    end
+
+    context 'source' do
+      let(:params) { { :server_config => 'puppet:///data/activemq.xml' } }
+      it { should contain_file('activemq.xml').with(:content => nil, :source => 'puppet:///data/activemq.xml') }
+    end
+  end
 end
