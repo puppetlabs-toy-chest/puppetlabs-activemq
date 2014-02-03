@@ -26,6 +26,7 @@
 #
 class activemq(
   $version       = 'present',
+  $package       = 'activemq',
   $ensure        = 'running',
   $instance      = 'activemq',
   $webconsole    = true,
@@ -36,6 +37,7 @@ class activemq(
   validate_re($version, '^present$|^latest$|^[._0-9a-zA-Z:-]+$')
   validate_bool($webconsole)
 
+  $package_real = $package
   $version_real = $version
   $ensure_real  = $ensure
   $webconsole_real = $webconsole
@@ -55,11 +57,13 @@ class activemq(
 
   class { 'activemq::packages':
     version => $version_real,
+    package => $package_real,
     notify  => Class['activemq::service'],
   }
 
   class { 'activemq::config':
     instance      => $instance,
+    package       => $package_real,
     server_config => $server_config_real,
     require       => Class['activemq::packages'],
     notify        => Class['activemq::service'],
