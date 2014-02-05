@@ -15,7 +15,7 @@ class activemq::packages (
   $package
 ) {
 
-  validate_re($version, '^[._0-9a-zA-Z:-]+$')
+  validate_re($version, '^[~+._0-9a-zA-Z:-]+$')
 
   $version_real = $version
   $package_real = $package
