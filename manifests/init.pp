@@ -34,7 +34,7 @@ class activemq(
 ) {
 
   validate_re($ensure, '^running$|^stopped$')
-  validate_re($version, '^present$|^latest$|^[._0-9a-zA-Z:-]+$')
+  validate_re($version, '^present$|^latest$|^[~+._0-9a-zA-Z:-]+$')
   validate_bool($webconsole)
 
   $package_real = $package
