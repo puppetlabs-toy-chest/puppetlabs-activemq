@@ -14,7 +14,7 @@
     </bean>
 
 <% end -%>
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= scope.lookupvar('::fqdn') %>" useJmx="true">
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= @mq_broker_name %>" useJmx="true">
         <managementContext>
             <managementContext createConnector="false"/>
         </managementContext>
@@ -26,9 +26,9 @@
         -->
         <networkConnectors>
   <%- @mq_cluster_brokers_real.each do |broker| -%>
-    <%- if broker != scope.lookupvar('::fqdn') -%>
+    <%- if broker != mq_broker_name -%>
           <networkConnector
-                name="<%= scope.lookupvar('::fqdn') %>-<%= broker %>-topics"
+                name="<%= @mq_broker_name %>-<%= broker %>-topics"
                 uri="static:(tcp://<%= broker %>:61616)"
                 userName="<%= @mq_cluster_username_real %>"
                 password="<%= @mq_cluster_password_real %>"
@@ -41,7 +41,7 @@
                 </excludedDestinations>
           </networkConnector>
           <networkConnector
-                name="<%= scope.lookupvar('::fqdn') %>-<%= broker %>-queues"
+                name="<%= @mq_broker_name %>-<%= broker %>-queues"
                 uri="static:(tcp://<% broker -%>:61616)"
                 userName="<%= @mq_cluster_username_real %>"
                 password="<%= @mq_cluster_password_real %>"
