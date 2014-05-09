@@ -25,18 +25,19 @@
 # }
 #
 class activemq(
-  $version             = $activemq::params::version,
-  $package             = $activemq::params::package,
-  $ensure              = $activemq::params::ensure,
-  $instance            = $activemq::params::instance,
-  $webconsole          = $activemq::params::webconsole,
-  $server_config       = $activemq::params::server_config,
-  $mq_broker_name      = $activemq::params::mq_broker_name,
-  $mq_admin_username   = $activemq::params::mq_admin_username,
-  $mq_admin_password   = $activemq::params::mq_admin_password,
-  $mq_cluster_username = $activemq::params::mq_cluster_username,
-  $mq_cluster_password = $activemq::params::mq_cluster_password,
-  $mq_cluster_brokers  = $activemq::params::mq_cluster_brokers,
+  $version                 = $activemq::params::version,
+  $package                 = $activemq::params::package,
+  $ensure                  = $activemq::params::ensure,
+  $instance                = $activemq::params::instance,
+  $webconsole              = $activemq::params::webconsole,
+  $server_config           = $activemq::params::server_config,
+  $server_config_show_diff = $activemq::params::server_config,
+  $mq_broker_name          = $activemq::params::mq_broker_name,
+  $mq_admin_username       = $activemq::params::mq_admin_username,
+  $mq_admin_password       = $activemq::params::mq_admin_password,
+  $mq_cluster_username     = $activemq::params::mq_cluster_username,
+  $mq_cluster_password     = $activemq::params::mq_cluster_password,
+  $mq_cluster_brokers      = $activemq::params::mq_cluster_brokers,
 ) inherits activemq::params {
 
   validate_re($ensure, '^running$|^stopped$')
@@ -89,11 +90,12 @@ class activemq(
   }
 
   class { 'activemq::config':
-    instance      => $instance,
-    package       => $package_real,
-    server_config => $server_config_real,
-    require       => Class['activemq::packages'],
-    notify        => Class['activemq::service'],
+    instance                => $instance,
+    package                 => $package_real,
+    server_config           => $server_config_real,
+    server_config_show_diff => $server_config_show_diff,
+    require                 => Class['activemq::packages'],
+    notify                  => Class['activemq::service'],
   }
 
   class { 'activemq::service':

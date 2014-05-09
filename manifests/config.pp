@@ -14,7 +14,8 @@ class activemq::config (
   $server_config,
   $instance,
   $package,
-  $path = '/etc/activemq/activemq.xml'
+  $path = '/etc/activemq/activemq.xml',
+  $server_config_show_diff = 'UNSET',
 ) {
 
   # Resource defaults
@@ -24,6 +25,14 @@ class activemq::config (
     mode    => '0644',
     notify  => Service['activemq'],
     require => Package[$package],
+  }
+
+  if $server_config_show_diff != 'UNSET' {
+    if versioncmp($settings::puppetversion, '3.2.0') >= 0 {
+      File { show_diff => $server_config_show_diff }
+    } else {
+      warning('show_diff not supported in puppet prior to 3.2, ignoring')
+    }
   }
 
   $server_config_real = $server_config
