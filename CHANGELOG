@@ -1,3 +1,18 @@
+2014-05-28 Release 0.3.0
+
+Summary:
+
+This is primarily a bugfix release, but also adds the ability to configure
+the package name.
+
+Features:
+- Make package name configurable.
+
+Bug Fixes:
+- Update version regex to match versions seen in Debian and Ubuntu.
+- Update erb to use instance variables
+- Fix the license
+
 2013-09-26 Release 0.2.0
 
 Summary:
