@@ -12,7 +12,7 @@ describe 'activemq' do
   describe "#webconsole" do
     context "with the default template" do
       describe "true" do
-        let(:params) { { 'webconsole' => true } }
+        let(:params) { {'webconsole' => true} }
         it { should contain_file('activemq.xml').with_content(/jetty.xml/) }
         it {
           pending "templates/default/jetty.xml is a tease - we don't actually push it out in any case"
@@ -21,7 +21,7 @@ describe 'activemq' do
       end
 
       describe "false" do
-        let(:params) { { 'webconsole' => false } }
+        let(:params) { {'webconsole' => false} }
         it { should_not contain_file('activemq.xml').with_content(/jetty.xml/) }
         it { should_not contain_file('jetty.xml') }
       end
@@ -32,14 +32,26 @@ describe 'activemq' do
     it { should_not contain_file('/etc/init.d/activemq') }
 
     context "RedHat" do
-      let(:facts) { { :osfamily => 'RedHat' } }
+      let(:facts) { {:osfamily => 'RedHat'} }
       it { should contain_file('/etc/init.d/activemq') }
+    end
+
+    context 'RedHat version <= 5.9' do
+      let(:facts) { {:osfamily => 'RedHat'} }
+      let(:params) { {:version => '5.8.5'} }
+      it { should contain_file('/etc/init.d/activemq') }
+    end
+
+    context 'RedHat version >= 5.9' do
+      let(:facts) { {:osfamily => 'RedHat'} }
+      let(:params) { {:version => '5.9'} }
+      it { should_not contain_file('/etc/init.d/activemq') }
     end
   end
 
   describe "#instance" do
     context "Debian" do
-      let(:facts) { { :osfamily => 'Debian' } }
+      let(:facts) { {:osfamily => 'Debian'} }
       context "default" do
         it { should contain_file('activemq.xml').with_path('/etc/activemq/instances-available/activemq/activemq.xml') }
         it { should contain_file('/etc/activemq/instances-enabled/activemq') }
@@ -48,7 +60,7 @@ describe 'activemq' do
       end
 
       context "pies" do
-        let(:params) { { :instance => 'pies' } }
+        let(:params) { {:instance => 'pies'} }
         it { should contain_file('activemq.xml').with_path('/etc/activemq/instances-available/pies/activemq.xml') }
         it { should contain_file('/etc/activemq/instances-enabled/pies') }
         it { should contain_file('/etc/activemq/instances-enabled/pies').with_ensure('link') }
@@ -62,7 +74,7 @@ describe 'activemq' do
       end
 
       context "pies" do
-        let(:params) { { :instance => 'pies' } }
+        let(:params) { {:instance => 'pies'} }
         it { should contain_file('activemq.xml').with_path('/etc/activemq/activemq.xml') }
       end
     end
