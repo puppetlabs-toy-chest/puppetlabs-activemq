@@ -25,13 +25,13 @@
 # }
 #
 class activemq(
-  $version       = 'present',
-  $package       = 'activemq',
-  $ensure        = 'running',
-  $instance      = 'activemq',
-  $webconsole    = true,
-  $server_config = 'UNSET'
-) {
+  $version       = $activemq::params::version,
+  $package       = $activemq::params::package,
+  $ensure        = $activemq::params::ensure,
+  $instance      = $activemq::params::instance,
+  $webconsole    = $activemq::params::webconsole,
+  $server_config = $activemq::params::server_config
+) inherits activemq::params {
 
   validate_re($ensure, '^running$|^stopped$')
   validate_re($version, '^present$|^latest$|^[~+._0-9a-zA-Z:-]+$')
