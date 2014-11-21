@@ -2,7 +2,7 @@
   "name": "puppetlabs-activemq",
   "version": "0.3.1",
   "author": "Puppet Labs",
-  "summary": "Puppet module for ActiveMQ",
+  "summary": "Installs and configures ActiveMQ.",
   "license": "Apache-2.0",
   "source": "https://github.com/puppetlabs/puppetlabs-activemq",
   "project_page": "https://github.com/puppetlabs/puppetlabs-activemq",
