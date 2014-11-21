@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-activemq",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "author": "Puppet Labs",
   "summary": "Installs and configures ActiveMQ.",
   "license": "Apache-2.0",
@@ -54,7 +54,7 @@
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": ">= 3.2.0 < 3.4.0"
+      "version_requirement": "3.x"
     },
     {
       "name": "puppet",
@@ -62,13 +62,7 @@
     }
   ],
   "dependencies": [
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 0.1.6"
-    },
-    {
-      "name": "puppetlabs/java",
-      "version_requirement": ">= 0.1.0"
-    }
+    {"name":"puppetlabs/stdlib","version_requirement":">= 0.1.6"},
+    {"name":"puppetlabs/java","version_requirement":">= 0.1.0"}
   ]
 }
