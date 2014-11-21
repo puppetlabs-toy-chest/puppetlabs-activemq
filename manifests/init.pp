@@ -30,7 +30,7 @@ class activemq(
   $ensure                  = 'running',
   $instance                = 'activemq',
   $webconsole              = true,
-  $server_config           = 'UNSET'
+  $server_config           = 'UNSET',
   $mq_broker_name          = $::fqdn,
   $mq_admin_username       = 'admin',
   $mq_admin_password       = 'admin',
