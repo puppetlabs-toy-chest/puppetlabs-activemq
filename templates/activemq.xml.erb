@@ -42,7 +42,7 @@
           </networkConnector>
           <networkConnector
                 name="<%= @mq_broker_name %>-<%= broker %>-queues"
-                uri="static:(tcp://<% broker -%>:61616)"
+                uri="static:(tcp://<%= broker %>:61616)"
                 userName="<%= @mq_cluster_username_real %>"
                 password="<%= @mq_cluster_password_real %>"
                 duplex="false"
