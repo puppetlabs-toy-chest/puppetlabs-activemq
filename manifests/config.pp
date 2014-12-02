@@ -52,7 +52,7 @@ class activemq::config (
     path    => $path_real,
     owner   => 'activemq',
     group   => 'activemq',
-    mode    => '0700',
+    mode    => '0600',
     content => $server_config_real,
   }
 
