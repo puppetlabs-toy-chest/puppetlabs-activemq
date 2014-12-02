@@ -50,8 +50,9 @@ class activemq::config (
   file { 'activemq.xml':
     ensure  => file,
     path    => $path_real,
-    owner   => '0',
-    group   => '0',
+    owner   => 'activemq',
+    group   => 'activemq',
+    mode    => '0600',
     content => $server_config_real,
   }
 
