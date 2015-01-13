@@ -55,4 +55,11 @@ class activemq::config (
     content => $server_config_real,
   }
 
+  if $::osfamily == 'RedHat' and ($version == 'present' or versioncmp($version, '5.9') < 0) {
+    file { '/usr/share/activemq/activemq-data':
+      ensure => link,
+      target => '/usr/share/activemq/data', 
+    }
+  }
+
 }
