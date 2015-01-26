@@ -10,7 +10,17 @@
         <managementContext>
             <managementContext createConnector="false"/>
         </managementContext>
+        <!--
+            Configure message persistence for the broker. The default persistence
+            mechanism is the KahaDB store (identified by the kahaDB tag).
+            For more information, see:
 
+            http://activemq.apache.org/persistence.html
+        -->
+        <persistenceAdapter>
+            <kahaDB directory="${activemq.data}/kahadb"/>
+        </persistenceAdapter>
+        <plugins>
         <plugins>
           <statisticsBrokerPlugin/>
           <simpleAuthenticationPlugin>
