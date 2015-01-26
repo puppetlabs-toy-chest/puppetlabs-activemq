@@ -21,7 +21,6 @@
             <kahaDB directory="${activemq.data}/kahadb"/>
         </persistenceAdapter>
         <plugins>
-        <plugins>
           <statisticsBrokerPlugin/>
           <simpleAuthenticationPlugin>
             <users>
