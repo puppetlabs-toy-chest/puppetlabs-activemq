@@ -37,6 +37,7 @@ class activemq(
   $mq_cluster_username     = 'amq',
   $mq_cluster_password     = 'secret',
   $mq_cluster_brokers      = [],
+  $ssl                     = true,
 ) {
 
   validate_re($ensure, '^running$|^stopped$')
@@ -47,6 +48,7 @@ class activemq(
   $version_real = $version
   $ensure_real  = $ensure
   $webconsole_real = $webconsole
+  $ssl_real       = $ssl
   $mq_admin_username_real       = $mq_admin_username
   $mq_admin_password_real       = $mq_admin_password
   $mq_cluster_username_real     = $mq_cluster_username

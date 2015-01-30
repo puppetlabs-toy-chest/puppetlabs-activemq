@@ -38,7 +38,11 @@
     <%- if broker != mq_broker_name -%>
           <networkConnector
                 name="<%= @mq_broker_name %>-<%= broker %>-topics"
+                <% if @ssl_real -%>
+                uri="static:(ssl://<%= broker -%>:61617)"
+                <% else -%>
                 uri="static:(tcp://<%= broker %>:61616)"
+                 <% end -%>
                 userName="<%= @mq_cluster_username_real %>"
                 password="<%= @mq_cluster_password_real %>"
                 duplex="false"
@@ -51,7 +55,11 @@
           </networkConnector>
           <networkConnector
                 name="<%= @mq_broker_name %>-<%= broker %>-queues"
+                <% if @ssl_real -%>
+                uri="static:(ssl://<%= broker -%>:61617)"
+                <% else -%>
                 uri="static:(tcp://<%= broker -%>:61616)"
+                <% end -%>
                 userName="<%= @mq_cluster_username_real %>"
                 password="<%= @mq_cluster_password_real %>"
                 duplex="false"
@@ -107,10 +115,24 @@
                 </tempUsage>
             </systemUsage>
         </systemUsage>
-
+		<% if @ssl_real -%>
+			<!--
+			configures keystores.
+			-->
+			<sslContext>
+				<sslContext
+				keyStore="keystore.jks" keyStorePassword="mcollective"
+				trustStore="truststore.jks" trustStorePassword="mcollective"
+				/>
+			</sslContext>
+		<% end -%>
         <transportConnectors>
             <transportConnector name="openwire" uri="tcp://0.0.0.0:61616"/>
             <transportConnector name="stomp+nio" uri="stomp://0.0.0.0:61613"/>
+            <% if @ssl_real -%>
+			<transportConnector name="stomp+nio+ssl" uri="stomp+nio+ssl://0.0.0.0:61614?needClientAuth=true&amp;transport.enabledProtocols=TLSv1,TLSv1.1,T
+LSv1.2"/>
+            <% end -%>
         </transportConnectors>
     </broker>
 
