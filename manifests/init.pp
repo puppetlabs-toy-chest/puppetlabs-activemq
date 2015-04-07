@@ -38,6 +38,18 @@ class activemq(
   $mq_cluster_username     = $activemq::params::mq_cluster_username,
   $mq_cluster_password     = $activemq::params::mq_cluster_password,
   $mq_cluster_brokers      = $activemq::params::mq_cluster_brokers,
+  $mq_transports           = $activemq::params::mq_transports,
+  $mq_truststore           = $activemq::params::mq_truststore,
+  $mq_keystore             = $activemq::params::mq_keystore,
+  $mq_truststore_password  = $activemq::params::mq_truststore_password,
+  $mq_keystore_password    = $activemq::params::mq_keystore_password,
+  $mq_users                = $activemq::params::mq_users,
+  $mq_queues               = $activemq::params::mq_queues,
+  $mq_topics               = $activemq::params::mq_topics,
+  $mq_memory_usage         = $activemq::params::mq_memory_usage,
+  $mq_store_usage_limit    = $activemq::params::mq_store_usage_limit,
+  $mq_store_usage_name     = $activemq::params::mq_store_usage_name,
+  $mq_temp_usage           = $activemq::params::mq_temp_usage,
 ) inherits activemq::params {
 
   validate_re($ensure, '^running$|^stopped$')
@@ -53,6 +65,14 @@ class activemq(
   $mq_cluster_username_real     = $mq_cluster_username
   $mq_cluster_password_real     = $mq_cluster_password
   $mq_cluster_brokers_real      = $mq_cluster_brokers
+  $mq_transports_real           = $mq_transports
+  $mq_users_real                = $mq_users
+  $mq_queues_real               = $mq_queues
+  $mq_topics_real               = $mq_topics
+  $mq_memory_usage_real         = $mq_memory_usage
+  $mq_store_usage_limit_real    = $mq_store_usage_limit
+  $mq_store_usage_name_real     = $mq_store_usage_name
+  $mq_temp_usage_real           = $mq_temp_usage
 
   if $mq_admin_username_real == 'admin' {
     warning '$mq_admin_username is set to the default value.  This should be changed.'
@@ -96,6 +116,8 @@ class activemq(
     server_config_show_diff => $server_config_show_diff,
     require                 => Class['activemq::packages'],
     notify                  => Class['activemq::service'],
+    truststore              => $mq_truststore,
+    keystore                => $mq_keystore
   }
 
   class { 'activemq::service':
