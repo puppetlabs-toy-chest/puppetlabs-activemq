@@ -17,7 +17,7 @@ class activemq::params {
   $mq_keystore             = 'puppet:///modules/activemq/keystore.jks'
   $mq_truststore_password  = 'secret'
   $mq_keystore_password    = 'secret'
-  $mq_users                = [{ "name" => "mcollective", "password" => "marionette", "groups" => "mcollective" }]
+  $mq_users                = [{ "name" => "mcollective", "password" => "marionette", "groups" => "mcollective,everyone" }]
   $mq_queues               = [{ "path" => "mcollective.>", "writegroups" => "mcollective", "readgroups" => "mcollective", "admingroups" => "mcollective" }]
   $mq_topics               = [{ "path" => "mcollective.>", "writegroups" => "mcollective", "readgroups" => "mcollective", "admingroups" => "mcollective" }]
   $mq_memory_usage         = "20 mb"
