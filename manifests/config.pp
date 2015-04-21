@@ -14,14 +14,16 @@ class activemq::config (
   $server_config,
   $instance,
   $package,
+  $system_user,
+  $system_group,
   $path = '/etc/activemq/activemq.xml',
   $server_config_show_diff = 'UNSET',
 ) {
 
   # Resource defaults
   File {
-    owner   => 'activemq',
-    group   => 'activemq',
+    owner   => $system_user,
+    group   => $system_group,
     mode    => '0644',
     notify  => Service['activemq'],
     require => Package[$package],
@@ -59,8 +61,8 @@ class activemq::config (
   file { 'activemq.xml':
     ensure  => file,
     path    => $path_real,
-    owner   => 'activemq',
-    group   => 'activemq',
+    owner   => $system_user,
+    group   => $system_group,
     mode    => '0600',
     content => $server_config_real,
   }
