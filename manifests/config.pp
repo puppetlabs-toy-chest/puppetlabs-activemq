@@ -11,20 +11,22 @@
 # Sample Usage:
 #
 class activemq::config (
-  $server_config,
-  $instance,
-  $package,
-  $path = '/etc/activemq/activemq.xml',
-  $server_config_show_diff = 'UNSET',
+  $server_config           = $activemq::server_config_content,
+  $instance                = $activemq::instance,
+  $package                 = $activemq::package,
+  $path                    = $activemq::config_path,
+  $server_config_show_diff = $activemq::server_config_show_diff,
+  $user                    = $activemq::user,
+  $group                   = $activemq::group,
 ) {
 
   # Resource defaults
   File {
-    owner   => 'activemq',
-    group   => 'activemq',
+    owner   => $user,
+    group   => $group,
     mode    => '0644',
-    notify  => Service['activemq'],
-    require => Package[$package],
+    notify  => Class['activemq::service'],
+    require => Class['activemq::packages'],
   }
 
   if $server_config_show_diff != 'UNSET' {
@@ -34,8 +36,6 @@ class activemq::config (
       warning('show_diff not supported in puppet prior to 3.2, ignoring')
     }
   }
-
-  $server_config_real = $server_config
 
   if $::osfamily == 'Debian' {
     $available = "/etc/activemq/instances-available/${instance}"
@@ -59,10 +59,10 @@ class activemq::config (
   file { 'activemq.xml':
     ensure  => file,
     path    => $path_real,
-    owner   => 'activemq',
-    group   => 'activemq',
+    owner   => $user,
+    group   => $group,
     mode    => '0600',
-    content => $server_config_real,
+    content => $server_config,
   }
 
 }

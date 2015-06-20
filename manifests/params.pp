@@ -1,5 +1,9 @@
 # Private
 class activemq::params {
+  $install_from_source     = false
+  $home                    = '/opt/apache-activemq'
+  $user                    = 'activemq'
+  $group                   = 'activemq'
   $version                 = 'present'
   $package                 = 'activemq'
   $ensure                  = 'running'
