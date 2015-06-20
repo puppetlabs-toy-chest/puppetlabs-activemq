@@ -37,6 +37,18 @@ describe 'activemq' do
   end
 
 
+  describe '#service' do
+    context "running" do
+      it { should contain_service('activemq').with_enable('true') }
+    end
+
+    context "stoped" do
+      let (:params) { { 'ensure' => 'stopped' } }
+      it { should contain_service('activemq').with_enable('false') }
+    end
+  end
+
+
   describe '#packages'do
 
     context "#install_from_source = false (default)" do
