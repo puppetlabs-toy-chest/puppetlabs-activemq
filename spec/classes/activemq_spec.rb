@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe 'activemq' do
+  let(:params) do
+    {
+        'mq_admin_username' => 'admin',
+        'mq_admin_password' => 'admin',
+    }
+  end
+
   it "should compile" do
     should contain_class('activemq')
   end
@@ -8,6 +15,7 @@ describe 'activemq' do
   # calling the file activemq.xml will be fragile if this module ever supports
   # debian-style multi-instance configurations
   it { should contain_file('activemq.xml') }
+
 
   describe "#webconsole" do
     context "with the default template" do
@@ -28,26 +36,89 @@ describe 'activemq' do
     end
   end
 
-  context "/etc/init.d/activemq" do
-    it { should_not contain_file('/etc/init.d/activemq') }
 
-    context "RedHat" do
-      let(:facts) { {:osfamily => 'RedHat'} }
-      it { should contain_file('/etc/init.d/activemq') }
+  describe '#service' do
+    context "running" do
+      it { should contain_service('activemq').with_enable('true') }
     end
 
-    context 'RedHat version <= 5.9' do
-      let(:facts) { {:osfamily => 'RedHat'} }
-      let(:params) { {:version => '5.8.5'} }
-      it { should contain_file('/etc/init.d/activemq') }
-    end
-
-    context 'RedHat version >= 5.9' do
-      let(:facts) { {:osfamily => 'RedHat'} }
-      let(:params) { {:version => '5.9'} }
-      it { should_not contain_file('/etc/init.d/activemq') }
+    context "stoped" do
+      let (:params) { { 'ensure' => 'stopped' } }
+      it { should contain_service('activemq').with_enable('false') }
     end
   end
+
+
+  describe '#packages'do
+
+    context "#install_from_binary = false (default)" do
+      it { should contain_package('activemq') }
+
+      context "/etc/init.d/activemq" do
+        it { should_not contain_file('/etc/init.d/activemq') }
+
+        context "RedHat" do
+          let(:facts) { {:osfamily => 'RedHat'} }
+          it { should contain_file('/etc/init.d/activemq') }
+        end
+
+        context 'RedHat version <= 5.9' do
+          let(:facts) { {:osfamily => 'RedHat'} }
+          let(:params) { {:version => '5.8.5'} }
+          it { should contain_file('/etc/init.d/activemq') }
+        end
+
+        context 'RedHat version >= 5.9' do
+          let(:facts) { {:osfamily => 'RedHat'} }
+          let(:params) { {:version => '5.9'} }
+          it { should_not contain_file('/etc/init.d/activemq') }
+        end
+      end
+    end
+
+    context "#install_from_binary = true" do
+      let(:params) do
+        {
+            :install_from_binary => true,
+            :package => 'http://www.eu.apache.org/dist/activemq/' \
+                '5.13.0/apache-activemq-5.13.0-bin.tar.gz',
+            :system_user => 'activemq1',
+            :system_group => 'activemq2',
+            :home => '/tmp/activemq'
+        }
+      end
+
+      it { should_not contain_package('activemq') }
+      it { should contain_file('/etc/init.d/activemq') }
+      it { should contain_user(params[:system_user]).with_system(true) }
+      it { should contain_group(params[:system_group]).with_system(true) }
+      it { should contain_file(params[:home]).with_ensure('directory').with_owner(params[:system_user]) }
+      it { should contain_staging__file('apache-activemq-5.13.0-bin.tar.gz').with_source(params[:package]) }
+      it { should contain_staging__extract('apache-activemq-5.13.0-bin.tar.gz').with_target(params[:home])}
+
+    end
+
+  end
+
+
+  describe '#config' do
+    context "#install_from_binary = false (default)" do
+
+    end
+
+    context "#install_from_binary = true" do
+      let(:params) do
+        {
+            :install_from_binary => true,
+            :package => 'http://download.nextag.com/apache/activemq/5.11.1/apache-activemq-5.11.1-bin.tar.gz',
+            :home => '/var/tmp/activemq'
+        }
+      end
+
+      it { should contain_file('activemq.xml').with_path("#{params[:home]}/conf/activemq.xml") }
+    end
+  end
+
 
   describe "#instance" do
     context "Debian" do

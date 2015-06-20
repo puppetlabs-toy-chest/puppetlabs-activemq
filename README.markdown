@@ -50,4 +50,22 @@ To disable this behavior, pass in webconsole => false to the class.  e.g.
         webconsole => false,
       }
     }
+    
+# Custom configuration #    
 
+    node default {
+      class { 'activemq':
+        server_config => template("${module_name}/activemq.xml.erb"),
+      }
+    }
+    
+# Install from binary #
+
+If you do not have a activemq package ready for your favorite distribution, you can install it from the binary 
+
+    node default {
+      class { 'activemq':
+        install_from_binary => true,
+        package             => 'http://www.eu.apache.org/dist/activemq/5.13.0/apache-activemq-5.13.0-bin.tar.gz',
+      }
+    }

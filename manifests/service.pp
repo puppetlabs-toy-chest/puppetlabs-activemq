@@ -11,21 +11,21 @@
 # Sample Usage:
 #
 class activemq::service(
-  $ensure,
-  $service_enable = $::activemq::params::service_enable
+  $ensure = $activemq::ensure,
 ) {
 
   # Arrays cannot take anonymous arrays in Puppet 2.6.8
   $v_ensure = [ '^running$', '^stopped$' ]
   validate_re($ensure, $v_ensure)
 
-  validate_bool($service_enable)
-
-  $ensure_real = $ensure
+  $enable = $ensure ? {
+    'running' => true,
+    default   => false,
+  }
 
   service { 'activemq':
-    enable     => $service_enable,
-    ensure     => $ensure_real,
+    ensure     => $ensure,
+    enable     => $enable,
     hasstatus  => true,
     hasrestart => true,
     require    => Class['activemq::packages'],
