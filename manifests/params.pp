@@ -6,6 +6,7 @@ class activemq::params {
   $instance                = 'activemq'
   $server_config           = 'UNSET'
   $server_config_show_diff = 'UNSET'
+  $service_enable          = true
   $mq_broker_name          = $::fqdn
   $mq_admin_username       = 'admin'
   $mq_admin_password       = 'admin'
