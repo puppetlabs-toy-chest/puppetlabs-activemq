@@ -15,9 +15,12 @@ class activemq::service(
   $service_enable = $::activemq::params::service_enable
 ) {
 
-  # Arrays cannot take anonymous arrays in Puppet 2.6.8
-  $v_ensure = [ '^running$', '^stopped$' ]
-  validate_re($ensure, $v_ensure)
+  # Allow ensure to be undef
+  if $ensure {
+    # Arrays cannot take anonymous arrays in Puppet 2.6.8
+    $v_ensure = [ '^running$', '^stopped$' ]
+    validate_re($ensure, $v_ensure)
+  }
 
   validate_bool($service_enable)
 
