@@ -16,15 +16,16 @@ class activemq::service(
 ) {
 
   # Allow ensure to be undef
-  if $ensure {
-    # Arrays cannot take anonymous arrays in Puppet 2.6.8
-    $v_ensure = [ '^running$', '^stopped$' ]
-    validate_re($ensure, $v_ensure)
-  }
+  # Arrays cannot take anonymous arrays in Puppet 2.6.8
+  $v_ensure = [ '^running$', '^stopped$', '^UNSET$' ]
+  validate_re($ensure, $v_ensure)
 
   validate_bool($service_enable)
 
-  $ensure_real = $ensure
+  $ensure_real = $ensure ? {
+    'UNSET' => undef,
+    default => $ensure,
+  }
 
   service { 'activemq':
     ensure     => $ensure_real,
