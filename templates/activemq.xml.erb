@@ -14,7 +14,11 @@
     </bean>
 
 <% end -%>
+<% if @version == 'present' or @version == 'latest' or scope.function_versioncmp([@version, '5.9']) < 0 -%>
     <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= @mq_broker_name %>" useJmx="true">
+<% else -%>
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= @mq_broker_name %>" useJmx="true" dataDirectory="${activemq.data}">
+<% end -%>
         <managementContext>
             <managementContext createConnector="false"/>
         </managementContext>
