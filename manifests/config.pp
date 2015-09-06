@@ -16,6 +16,8 @@ class activemq::config (
   $package,
   $path = '/etc/activemq/activemq.xml',
   $server_config_show_diff = 'UNSET',
+  $keystore,
+  $truststore
 ) {
 
   # Resource defaults
@@ -63,6 +65,24 @@ class activemq::config (
     group   => 'activemq',
     mode    => '0600',
     content => $server_config_real,
+  }
+  file { 'keystore.jks':
+    path    => '/etc/activemq/keystore.jks',
+    ensure  => 'file',
+    owner   => 'activemq',
+    group   => '0',
+    purge   => true,
+    mode    => '0440',
+    source  => $keystore,
+  }
+  file { 'truststore.jks':
+    path => '/etc/activemq/truststore.jks',
+    ensure  => 'file',
+    owner   => 'activemq',
+    group   => '0',
+    purge   => true,
+    mode    => '0440',
+    source  => $truststore,
   }
 
 }

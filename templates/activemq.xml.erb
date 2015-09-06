@@ -70,8 +70,10 @@
 <% if @mq_cluster_brokers_real.length > 1 -%>
               <authenticationUser username="<%= @mq_cluster_username_real %>" password="<%= @mq_cluster_password_real %>" groups="admins,everyone"/>
 <% end -%>
-              <authenticationUser username="mcollective" password="marionette" groups="mcollective,everyone"/>
               <authenticationUser username="<%= @mq_admin_username_real %>" password="<%= @mq_admin_password_real %>" groups="mcollective,admins,everyone"/>
+<%- @mq_users_real.uniq.each do |user| -%>
+              <authenticationUser username="<%= user["name"] %>" password="<%= user["password"] %>" groups="<%= user["groups"] %>"/>
+<%- end %>
             </users>
           </simpleAuthenticationPlugin>
           <authorizationPlugin>
@@ -80,8 +82,12 @@
                 <authorizationEntries>
                   <authorizationEntry queue=">" write="admins" read="admins" admin="admins" />
                   <authorizationEntry topic=">" write="admins" read="admins" admin="admins" />
-                  <authorizationEntry topic="mcollective.>" write="mcollective" read="mcollective" admin="mcollective" />
-                  <authorizationEntry queue="mcollective.>" write="mcollective" read="mcollective" admin="mcollective" />
+<%- @mq_queues_real.uniq.each do |queue| -%>
+                  <authorizationEntry queue="<%= queue["path"]%>" write="<%= queue["writegroups"] %>" read="<%= queue["readgroups"] %>" admin="<%= queue["admingroups"] %>" />
+<%- end -%>
+<%- @mq_topics_real.uniq.each do |topic| -%>
+                  <authorizationEntry topic="<%= topic["path"]%>" write="<%= topic["writegroups"] %>" read="<%= topic["readgroups"] %>" admin="<%= topic["admingroups"] %>" />
+<%- end -%>
                   <authorizationEntry topic="ActiveMQ.Advisory.>" read="everyone" write="everyone" admin="everyone"/>
                 </authorizationEntries>
               </authorizationMap>
@@ -92,21 +98,27 @@
         <systemUsage>
             <systemUsage>
                 <memoryUsage>
-                    <memoryUsage limit="20 mb"/>
+                    <memoryUsage limit="<%= @mq_memory_usage_real %>"/>
                 </memoryUsage>
                 <storeUsage>
-                    <storeUsage limit="1 gb" name="foo"/>
+                    <storeUsage limit="<%= @mq_store_usage_limit_real %>" name="<%= @mq_store_usage_name_real %>"/>
                 </storeUsage>
                 <tempUsage>
-                    <tempUsage limit="100 mb"/>
+                    <tempUsage limit="<%= @mq_temp_usage_real %>"/>
                 </tempUsage>
             </systemUsage>
         </systemUsage>
 
         <transportConnectors>
+<%- @mq_transports_real.uniq.each do |transport| -%>
+            <transportConnector name="<%= transport["name"] %>" uri="<%= transport["uri"] %>"/>
+<%- end -%>
             <transportConnector name="openwire" uri="tcp://0.0.0.0:61616"/>
-            <transportConnector name="stomp+nio" uri="stomp://0.0.0.0:61613"/>
         </transportConnectors>
+	    <sslContext>
+	        <sslContext keyStore="/etc/activemq/keystore.jks" keyStorePassword="<%= @mq_keystore_password %>"
+	            trustStore="/etc/activemq/truststore.jks" trustStorePassword="<%= @mq_truststore_password %>"/>
+	</sslContext>
     </broker>
 
 <% if @webconsole_real -%>
