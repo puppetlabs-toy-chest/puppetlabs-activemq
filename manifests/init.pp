@@ -32,6 +32,8 @@ class activemq(
   $webconsole              = $activemq::params::webconsole,
   $server_config           = $activemq::params::server_config,
   $server_config_show_diff = $activemq::params::server_config,
+  $system_user             = $activemq::params::system_user,
+  $system_group            = $activemq::params::system_group,
   $mq_broker_name          = $activemq::params::mq_broker_name,
   $mq_admin_username       = $activemq::params::mq_admin_username,
   $mq_admin_password       = $activemq::params::mq_admin_password,
@@ -94,6 +96,8 @@ class activemq(
     package                 => $package_real,
     server_config           => $server_config_real,
     server_config_show_diff => $server_config_show_diff,
+    system_user             => $system_user,
+    system_group            => $system_group,
     require                 => Class['activemq::packages'],
     notify                  => Class['activemq::service'],
   }

@@ -15,12 +15,22 @@ class activemq::params {
   $mq_cluster_brokers      = []
 
   # Debian does not include the webconsole
+  # OpenBSD system user/group differs
   case $::osfamily {
     'Debian': {
-      $webconsole = false
+      $webconsole   = false
+      $system_user  = 'activemq'
+      $system_group = 'activemq'
+    }
+    'OpenBSD': {
+      $webconsole   = true
+      $system_user  = '_activemq'
+      $system_group = '_activemq'
     }
     default: {
-      $webconsole = true
+      $webconsole   = true
+      $system_user  = 'activemq'
+      $system_group = 'activemq'
     }
   }
 }
