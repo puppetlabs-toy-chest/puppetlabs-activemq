@@ -38,6 +38,10 @@ class activemq(
   $mq_cluster_username     = $activemq::params::mq_cluster_username,
   $mq_cluster_password     = $activemq::params::mq_cluster_password,
   $mq_cluster_brokers      = $activemq::params::mq_cluster_brokers,
+  $mq_memory_usage         = $activemq::params::mq_memory_usage,
+  $mq_store_usage          = $activemq::params::mq_store_usage,
+  $mq_store_name           = $activemq::params::mq_store_name,
+  $mq_temp_usage           = $activemq::params::mq_temp_usage,
 ) inherits activemq::params {
 
   validate_re($ensure, '^running$|^stopped$')

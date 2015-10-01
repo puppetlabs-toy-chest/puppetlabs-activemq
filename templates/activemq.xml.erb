@@ -92,13 +92,13 @@
         <systemUsage>
             <systemUsage>
                 <memoryUsage>
-                    <memoryUsage limit="20 mb"/>
+                    <memoryUsage limit="<%= @mq_memory_usage %>"/>
                 </memoryUsage>
                 <storeUsage>
-                    <storeUsage limit="1 gb" name="foo"/>
+                    <storeUsage limit="<%= @mq_store_usage %>" name="<%= @mq_store_name %>"/>
                 </storeUsage>
                 <tempUsage>
-                    <tempUsage limit="100 mb"/>
+                    <tempUsage limit="<%= @mq_temp_usage %>"/>
                 </tempUsage>
             </systemUsage>
         </systemUsage>
