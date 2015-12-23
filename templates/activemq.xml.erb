@@ -6,7 +6,7 @@
   http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
   http://activemq.apache.org/camel/schema/spring http://activemq.apache.org/camel/schema/spring/camel-spring.xsd">
 
-<% if @webconsole_real -%>
+<% if @webconsole -%>
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <value>file:${activemq.base}/conf/credentials.properties</value>
@@ -23,19 +23,19 @@
             <managementContext createConnector="false"/>
         </managementContext>
 
-<% if @mq_cluster_brokers_real.length > 1 -%>
+<% if @mq_cluster_brokers.length > 1 -%>
         <!--
-          Configure network connectors for a network of brokers. 
+          Configure network connectors for a network of brokers.
           In this config, all brokers are connected to each other.
         -->
         <networkConnectors>
-  <%- @mq_cluster_brokers_real.each do |broker| -%>
+  <%- @mq_cluster_brokers.each do |broker| -%>
     <%- if broker != mq_broker_name -%>
           <networkConnector
                 name="<%= @mq_broker_name %>-<%= broker %>-topics"
                 uri="static:(tcp://<%= broker %>:61616)"
-                userName="<%= @mq_cluster_username_real %>"
-                password="<%= @mq_cluster_password_real %>"
+                userName="<%= @mq_cluster_username %>"
+                password="<%= @mq_cluster_password %>"
                 duplex="false"
                 decreaseNetworkConsumerPriority="true"
                 networkTTL="2"
@@ -47,8 +47,8 @@
           <networkConnector
                 name="<%= @mq_broker_name %>-<%= broker %>-queues"
                 uri="static:(tcp://<%= broker %>:61616)"
-                userName="<%= @mq_cluster_username_real %>"
-                password="<%= @mq_cluster_password_real %>"
+                userName="<%= @mq_cluster_username %>"
+                password="<%= @mq_cluster_password %>"
                 duplex="false"
                 decreaseNetworkConsumerPriority="true"
                 networkTTL="2"
@@ -67,11 +67,11 @@
           <statisticsBrokerPlugin/>
           <simpleAuthenticationPlugin>
             <users>
-<% if @mq_cluster_brokers_real.length > 1 -%>
-              <authenticationUser username="<%= @mq_cluster_username_real %>" password="<%= @mq_cluster_password_real %>" groups="admins,everyone"/>
+<% if @mq_cluster_brokers.length > 1 -%>
+              <authenticationUser username="<%= @mq_cluster_username %>" password="<%= @mq_cluster_password %>" groups="admins,everyone"/>
 <% end -%>
               <authenticationUser username="mcollective" password="marionette" groups="mcollective,everyone"/>
-              <authenticationUser username="<%= @mq_admin_username_real %>" password="<%= @mq_admin_password_real %>" groups="mcollective,admins,everyone"/>
+              <authenticationUser username="<%= @mq_admin_username %>" password="<%= @mq_admin_password %>" groups="mcollective,admins,everyone"/>
             </users>
           </simpleAuthenticationPlugin>
           <authorizationPlugin>
@@ -109,7 +109,7 @@
         </transportConnectors>
     </broker>
 
-<% if @webconsole_real -%>
+<% if @webconsole -%>
       <import resource="jetty.xml"/>
 <% end -%>
 </beans>

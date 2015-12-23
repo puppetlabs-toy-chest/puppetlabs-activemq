@@ -2,3 +2,7 @@ pkg/
 tmp/
 .DS_Store
 spec/fixtures
+.ruby-gemset
+.ruby-version
+Gemfile.lock
+activemq.iml
