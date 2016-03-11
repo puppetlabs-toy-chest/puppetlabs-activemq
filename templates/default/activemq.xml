@@ -24,7 +24,7 @@
           <statisticsBrokerPlugin/>
           <simpleAuthenticationPlugin>
             <users>
-              <authenticationUser username="mcollective" password="marionette" groups="mcollective,everyone"/>
+              <authenticationUser username="mcollective" password="<%= @mco_middleware_password_real %>" groups="mcollective,everyone"/>
               <authenticationUser username="admin" password="secret" groups="mcollective,admin,everyone"/>
             </users>
           </simpleAuthenticationPlugin>

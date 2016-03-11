@@ -38,6 +38,8 @@ class activemq(
   $mq_cluster_username     = $activemq::params::mq_cluster_username,
   $mq_cluster_password     = $activemq::params::mq_cluster_password,
   $mq_cluster_brokers      = $activemq::params::mq_cluster_brokers,
+  $mco_middleware_password = $activemq::params::mco_middleware_password,
+  $keystore_password       = $activemq::params::keystore_password,
   $ssl                     = $activemq::params::ssl,
 ) inherits activemq::params {
 
@@ -55,6 +57,8 @@ class activemq(
   $mq_cluster_username_real     = $mq_cluster_username
   $mq_cluster_password_real     = $mq_cluster_password
   $mq_cluster_brokers_real      = $mq_cluster_brokers
+  $mco_middleware_password_real = $mco_middleware_password
+  $keystore_password_real       = $keystore_password
 
   if $mq_admin_username_real == 'admin' {
     warning '$mq_admin_username is set to the default value.  This should be changed.'
@@ -62,6 +66,14 @@ class activemq(
 
   if $mq_admin_password_real == 'admin' {
     warning '$mq_admin_password is set to the default value.  This should be changed.'
+  }
+
+  if $mco_middleware_password_real == 'marionette' {
+    warning '$mco_middleware_password is set to the default value.  This should be changed.'
+  }
+
+  if $keystore_password_real == 'mcollective' {
+    warning '$keystore_password is set to the default value.  This should be changed.'
   }
 
   if size($mq_cluster_brokers_real) > 0 and $mq_cluster_username_real == 'amq' {
