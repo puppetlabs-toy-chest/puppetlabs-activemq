@@ -13,6 +13,7 @@ class activemq::params {
   $mq_cluster_username     = 'amq'
   $mq_cluster_password     = 'secret'
   $mq_cluster_brokers      = []
+  $ssl                     = false
 
   # Debian does not include the webconsole
   case $::osfamily {

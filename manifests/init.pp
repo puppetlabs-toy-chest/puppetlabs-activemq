@@ -38,16 +38,18 @@ class activemq(
   $mq_cluster_username     = $activemq::params::mq_cluster_username,
   $mq_cluster_password     = $activemq::params::mq_cluster_password,
   $mq_cluster_brokers      = $activemq::params::mq_cluster_brokers,
+  $ssl                     = $activemq::params::ssl,
 ) inherits activemq::params {
 
   validate_re($ensure, '^running$|^stopped$')
   validate_re($version, '^present$|^latest$|^[~+._0-9a-zA-Z:-]+$')
   validate_bool($webconsole)
 
-  $package_real = $package
-  $version_real = $version
-  $ensure_real  = $ensure
-  $webconsole_real = $webconsole
+  $package_real                 = $package
+  $version_real                 = $version
+  $ensure_real                  = $ensure
+  $webconsole_real              = $webconsole
+  $ssl_real                     = $ssl
   $mq_admin_username_real       = $mq_admin_username
   $mq_admin_password_real       = $mq_admin_password
   $mq_cluster_username_real     = $mq_cluster_username

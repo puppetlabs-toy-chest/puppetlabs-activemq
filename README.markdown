@@ -51,3 +51,8 @@ To disable this behavior, pass in webconsole => false to the class.  e.g.
       }
     }
 
+# SSL Support #
+
+This package includes support for SSL. To enable SSL, follow the process
+outlined in the [ActiveMQ SSL documentation](http://activemq.apache.org/how-do-i-use-ssl.html),
+and then set the ssl class parameter to true. The default is no ssl, or false.
