@@ -38,6 +38,8 @@ class activemq(
   $mq_cluster_username     = $activemq::params::mq_cluster_username,
   $mq_cluster_password     = $activemq::params::mq_cluster_password,
   $mq_cluster_brokers      = $activemq::params::mq_cluster_brokers,
+  $mc_username             = $activemq::params::mc_username,
+  $mc_password             = $activemq::params::mc_password,
 ) inherits activemq::params {
 
   validate_re($ensure, '^running$|^stopped$')

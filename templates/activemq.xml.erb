@@ -70,7 +70,7 @@
 <% if @mq_cluster_brokers_real.length > 1 -%>
               <authenticationUser username="<%= @mq_cluster_username_real %>" password="<%= @mq_cluster_password_real %>" groups="admins,everyone"/>
 <% end -%>
-              <authenticationUser username="mcollective" password="marionette" groups="mcollective,everyone"/>
+              <authenticationUser username="<%= @mc_username %>" password="<%= @mc_password %>" groups="mcollective,everyone"/>
               <authenticationUser username="<%= @mq_admin_username_real %>" password="<%= @mq_admin_password_real %>" groups="mcollective,admins,everyone"/>
             </users>
           </simpleAuthenticationPlugin>
