@@ -15,17 +15,37 @@
 
 <% end -%>
 <% if @version == 'present' or @version == 'latest' or scope.function_versioncmp([@version, '5.9']) < 0 -%>
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= @mq_broker_name %>" useJmx="true">
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= @mq_broker_name %>" useJmx="true" schedulePeriodForDestinationPurge="60000" destroyApplicationContextOnStop="true">
 <% else -%>
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= @mq_broker_name %>" useJmx="true" dataDirectory="${activemq.data}">
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= @mq_broker_name %>" useJmx="true" dataDirectory="${activemq.data}" schedulePeriodForDestinationPurge="60000">
 <% end -%>
+
+        <destinationPolicy>
+          <policyMap>
+            <policyEntries>
+              <policyEntry topic=">" producerFlowControl="false"/>
+              <policyEntry queue="*.reply.>" gcInactiveDestinations="true" inactiveTimoutBeforeGC="300000" />
+            </policyEntries>
+          </policyMap>
+        </destinationPolicy>
+
         <managementContext>
             <managementContext createConnector="false"/>
         </managementContext>
+        <!--
+            Configure message persistence for the broker. The default persistence
+            mechanism is the KahaDB store (identified by the kahaDB tag).
+            For more information, see:
+
+            http://activemq.apache.org/persistence.html
+        -->
+        <persistenceAdapter>
+            <kahaDB directory="${activemq.data}/KahaDB"/>
+        </persistenceAdapter>
 
 <% if @mq_cluster_brokers_real.length > 1 -%>
         <!--
-          Configure network connectors for a network of brokers. 
+          Configure network connectors for a network of brokers.
           In this config, all brokers are connected to each other.
         -->
         <networkConnectors>
@@ -33,7 +53,11 @@
     <%- if broker != mq_broker_name -%>
           <networkConnector
                 name="<%= @mq_broker_name %>-<%= broker %>-topics"
+                <% if @ssl_real -%>
+                uri="static:(ssl://<%= broker -%>:61617)"
+                <% else -%>
                 uri="static:(tcp://<%= broker %>:61616)"
+                <% end -%>
                 userName="<%= @mq_cluster_username_real %>"
                 password="<%= @mq_cluster_password_real %>"
                 duplex="false"
@@ -46,7 +70,11 @@
           </networkConnector>
           <networkConnector
                 name="<%= @mq_broker_name %>-<%= broker %>-queues"
+                <% if @ssl_real -%>
+                uri="static:(ssl://<%= broker %>:61617)"
+                <% else -%>
                 uri="static:(tcp://<%= broker %>:61616)"
+                <% end -%>
                 userName="<%= @mq_cluster_username_real %>"
                 password="<%= @mq_cluster_password_real %>"
                 duplex="false"
@@ -70,7 +98,7 @@
 <% if @mq_cluster_brokers_real.length > 1 -%>
               <authenticationUser username="<%= @mq_cluster_username_real %>" password="<%= @mq_cluster_password_real %>" groups="admins,everyone"/>
 <% end -%>
-              <authenticationUser username="mcollective" password="marionette" groups="mcollective,everyone"/>
+              <authenticationUser username="mcollective" password="<%= @mco_middleware_password_real %>" groups="mcollective,everyone"/>
               <authenticationUser username="<%= @mq_admin_username_real %>" password="<%= @mq_admin_password_real %>" groups="mcollective,admins,everyone"/>
             </users>
           </simpleAuthenticationPlugin>
@@ -102,10 +130,23 @@
                 </tempUsage>
             </systemUsage>
         </systemUsage>
-
+		<% if @ssl_real -%>
+			<!--
+			configures keystores.
+			-->
+        <sslContext>
+          <sslContext
+             keyStore="keystore.jks" keyStorePassword="<%= @keystore_password %>"
+             trustStore="truststore.jks" trustStorePassword="<%= @keystore_password %>"
+          />
+        </sslContext>
+		<% end -%>
         <transportConnectors>
             <transportConnector name="openwire" uri="tcp://0.0.0.0:61616"/>
-            <transportConnector name="stomp+nio" uri="stomp://0.0.0.0:61613"/>
+            <% if @ssl_real -%>
+      			<transportConnector name="stomp+ssl" uri="stomp+ssl://0.0.0.0:61614?needClientAuth=true&amp;transport.enabledProtocols=TLSv1,TLSv1.1,TLSv1.2"/>
+       			<transportConnector name="openwire+ssl" uri="ssl://0.0.0.0:61617?needClientAuth=true&amp;transport.enabledProtocols=TLSv1,TLSv1.1,TLSv1.2"/>
+            <% end -%>
         </transportConnectors>
     </broker>
 
